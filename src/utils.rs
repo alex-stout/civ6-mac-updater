@@ -1,5 +1,10 @@
 use owo_colors::OwoColorize;
-use std::{fs::{ File}, env, path::{Path, PathBuf}, io::{Write}};
+use std::{
+    env,
+    fs::File,
+    io::Write,
+    path::{Path, PathBuf},
+};
 
 use serde_json::{json, Value};
 
@@ -11,8 +16,13 @@ pub fn get_full_path(path: &str) -> PathBuf {
 }
 
 pub fn update_file(path: PathBuf, contents: &serde_json::Value) {
-    let formatted_contents = serde_json::to_string_pretty(&contents).expect("Unable to format JSON");
-    let mut file = File::options().write(true).truncate(true).open(&path).unwrap();
+    let formatted_contents =
+        serde_json::to_string_pretty(&contents).expect("Unable to format JSON");
+    let mut file = File::options()
+        .write(true)
+        .truncate(true)
+        .open(&path)
+        .unwrap();
     write!(&mut file, "{}", formatted_contents).expect("Unable to update config file.");
 }
 
@@ -30,12 +40,20 @@ pub fn update_contents(json: &Value, args: Vec<String>) -> Value {
 pub fn get_values() -> Vec<String> {
     print!("{}", "Fetching values from remote repository... ".yellow());
 
-    let resp = reqwest::blocking::get("https://raw.githubusercontent.com/alex-stout/civ6-mac-updater/main/values.json").unwrap().text().unwrap();
+    let resp = reqwest::blocking::get(
+        "https://raw.githubusercontent.com/alex-stout/civ6-mac-updater/main/values.json",
+    )
+    .unwrap()
+    .text()
+    .unwrap();
     let values: Value = serde_json::from_str(&resp.as_str()).expect("JSON was not well-formatted");
 
-
-    let version = values["version"].as_str().expect("Incorrect or missing version from values.json");
-    let version_str = values["version_str"].as_str().expect("Incorrect or missing version_str from values.json");
+    let version = values["version"]
+        .as_str()
+        .expect("Incorrect or missing version from values.json");
+    let version_str = values["version_str"]
+        .as_str()
+        .expect("Incorrect or missing version_str from values.json");
 
     println!("{}", "Retrieved values".green());
 
