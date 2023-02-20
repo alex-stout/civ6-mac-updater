@@ -10,6 +10,7 @@ clap = { version = "4.0.32", features = ["derive"] }
 owo-colors = "3.5.0"
 serde = { version = "1.0.152", features = ["derive"] }
 serde_json = "1.0.93"
+reqwest = { version = "0.11.14", features = ["blocking"] }
 
 [dev-dependencies]
 cargo-husky = "1"
