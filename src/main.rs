@@ -24,9 +24,9 @@ fn main() {
     let mut values: Vec<String> = Vec::new();
     
     if args.version_str.is_empty() || !args.version_str.is_empty() {
-        values = get_values();
+        values.extend(get_values());
     } else {
-        values = [args.version_number, args.version_str].to_vec();
+        values.extend([args.version_number, args.version_str].to_vec());
     }
 
     let updated_json = update_contents(&contents, values);
