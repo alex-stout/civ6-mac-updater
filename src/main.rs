@@ -31,7 +31,7 @@ fn main() {
 
     let updated_json = update_contents(&contents, values);
 
-    println!("{}", "Updating configuration:");
+    println!("Updating configuration:");
     println!(
         "\tVersion number: {} -> {}",
         contents["App.WinFileVersion"].as_str().unwrap().yellow(),

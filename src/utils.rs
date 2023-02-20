@@ -10,7 +10,7 @@ use serde_json::{json, Value};
 
 pub fn get_full_path(path: &str) -> PathBuf {
     #[allow(deprecated)]
-    let home_path = env::home_dir().expect("Cannot get home dir.").to_path_buf();
+    let home_path = env::home_dir().expect("Cannot get home dir.");
 
     Path::new(&home_path).join(path)
 }
@@ -21,7 +21,7 @@ pub fn update_file(path: PathBuf, contents: &serde_json::Value) {
     let mut file = File::options()
         .write(true)
         .truncate(true)
-        .open(&path)
+        .open(path)
         .unwrap();
     write!(&mut file, "{}", formatted_contents).expect("Unable to update config file.");
 }
@@ -46,7 +46,7 @@ pub fn get_values() -> Vec<String> {
     .unwrap()
     .text()
     .unwrap();
-    let values: Value = serde_json::from_str(&resp.as_str()).expect("JSON was not well-formatted");
+    let values: Value = serde_json::from_str(resp.as_str()).expect("JSON was not well-formatted");
 
     let version = values["version"]
         .as_str()
