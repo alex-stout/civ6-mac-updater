@@ -7,7 +7,7 @@ use owo_colors::OwoColorize;
 use clap::Parser;
 use args::CivUpdaterArgs;
 
-use crate::utils::{get_full_path, update_contents, update_file};
+use crate::utils::{get_full_path, update_contents, update_file, get_values};
 
 // default path to the config file 
 static DEFAULT_FILE_PATH: &str = "Library/Application Support/Steam/steamapps/common/Sid Meier\'s Civilization VI/Civ6.app/Contents/AspyrAssets/global/String/App.json";
@@ -21,7 +21,15 @@ fn main() {
     let contents: serde_json::Value =
         serde_json::from_str(&raw_contents).expect("JSON was not well-formatted");
 
-    let updated_json = update_contents(&contents, &args);
+    let mut values: Vec<String> = Vec::new();
+    
+    if args.version_str.is_empty() || !args.version_str.is_empty() {
+        values = get_values();
+    } else {
+        values = [args.version_number, args.version_str].to_vec();
+    }
+
+    let updated_json = update_contents(&contents, values);
 
     println!("{}", "Updating configuration:");
     println!("\tVersion number: {} -> {}", contents["App.WinFileVersion"].as_str().unwrap().yellow(), updated_json["App.WinFileVersion"].as_str().unwrap().green());
