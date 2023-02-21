@@ -1,8 +1,8 @@
 use owo_colors::OwoColorize;
 use std::{
     env,
-    fs::File,
-    io::Write,
+    fs::{self, File},
+    io::{ErrorKind, Write},
     path::{Path, PathBuf},
 };
 
@@ -13,6 +13,28 @@ pub fn get_full_path(path: &str) -> PathBuf {
     let home_path = env::home_dir().expect("Cannot get home dir.");
 
     Path::new(&home_path).join(path)
+}
+
+pub fn get_config_file(path: &PathBuf) -> String {
+    let file_results = fs::read_to_string(path);
+
+    let raw_contents = match file_results {
+        Ok(file) => file,
+        Err(error) => match error.kind() {
+            ErrorKind::NotFound => {
+                println!(
+                    "{}",
+                    "Config file not found at. Please check that Civ6 is installed.".red()
+                );
+                std::process::exit(1);
+            }
+            other_error => {
+                panic!("Problem opening the file: {:?}", other_error);
+            }
+        },
+    };
+
+    raw_contents
 }
 
 pub fn done() {

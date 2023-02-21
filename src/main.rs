@@ -2,13 +2,13 @@ mod args;
 mod utils;
 
 use owo_colors::OwoColorize;
-use std::fs;
 
 use args::CivUpdaterArgs;
 use clap::Parser;
 
 use crate::utils::{
-    create_backup, done, get_full_path, get_values, json_diff, update_contents, update_file,
+    create_backup, done, get_config_file, get_full_path, get_values, json_diff, update_contents,
+    update_file,
 };
 
 // default path to the config file
@@ -18,7 +18,7 @@ fn main() {
     let args = CivUpdaterArgs::parse();
     let path = get_full_path(DEFAULT_FILE_PATH);
 
-    let raw_contents = fs::read_to_string(&path).expect("Could not open file.");
+    let raw_contents = get_config_file(&path);
 
     let contents: serde_json::Value =
         serde_json::from_str(&raw_contents).expect("JSON was not well-formatted");
@@ -37,6 +37,7 @@ fn main() {
 
     if !json_diff(&contents, &updated_json) {
         println!("Values are up-to-date.");
+        done();
         return;
     }
 

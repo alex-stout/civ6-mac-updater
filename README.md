@@ -1,6 +1,19 @@
 # Civ VI Mac Updater CLI
 CLI for multiplayer Civ 6 games. Updates the version number on Macs to match Windows game versions. This fixes the host version mismatch error.
 
+## Installation
+
+Using the Rust toolchain:
+```console
+$ cargo install civ6-mac-updater
+```
+
+This installs the CLI.
+
+To run:
+```console
+$ civ6-mac-updater
+```
 
 ## Usage
 
