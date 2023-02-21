@@ -38,7 +38,7 @@ pub fn update_contents(json: &Value, args: Vec<String>) -> Value {
 }
 
 pub fn get_values() -> Vec<String> {
-    print!("{}", "Fetching values from remote repository... ".yellow());
+    print!("Fetching values from remote repository... ");
 
     let resp = reqwest::blocking::get(
         "https://raw.githubusercontent.com/alex-stout/civ6-mac-updater/main/values.json",

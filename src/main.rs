@@ -31,6 +31,7 @@ fn main() {
 
     let updated_json = update_contents(&contents, values);
 
+    println!("\nFound configuration at: {}\n", path.display());
     println!("Updating configuration:");
     println!(
         "\tVersion number: {} -> {}",
