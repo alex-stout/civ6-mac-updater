@@ -7,7 +7,9 @@ use std::fs;
 use args::CivUpdaterArgs;
 use clap::Parser;
 
-use crate::utils::{get_full_path, get_values, update_contents, update_file, create_backup, done};
+use crate::utils::{
+    create_backup, done, get_full_path, get_values, json_diff, update_contents, update_file,
+};
 
 // default path to the config file
 static DEFAULT_FILE_PATH: &str = "Library/Application Support/Steam/steamapps/common/Sid Meier\'s Civilization VI/Civ6.app/Contents/AspyrAssets/global/String/App.json";
@@ -32,12 +34,19 @@ fn main() {
     let updated_json = update_contents(&contents, values);
 
     println!("Found configuration at: {}", path.display());
+
+    if !json_diff(&contents, &updated_json) {
+        println!("Values are up-to-date.");
+        return;
+    }
+
     println!("Updated configuration:");
     println!(
         "\tVersion number: {} -> {}",
         contents["App.WinFileVersion"].as_str().unwrap().yellow(),
         updated_json["App.WinFileVersion"].as_str().unwrap().green()
     );
+
     println!(
         "\tVersion string: {} -> {}",
         contents["App.WinFileVersionStr"].as_str().unwrap().yellow(),
@@ -54,5 +63,4 @@ fn main() {
     print!("Updating values... ");
     update_file(&path, &updated_json);
     done();
-    
 }

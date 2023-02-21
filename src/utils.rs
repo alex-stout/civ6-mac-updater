@@ -19,7 +19,7 @@ pub fn done() {
     println!("{}", "Done.".green());
 }
 
-pub fn create_backup(path: &PathBuf,  contents: &serde_json::Value) {
+pub fn create_backup(path: &Path, contents: &serde_json::Value) {
     let backup_path = format!("{}{}", path.display(), ".backup");
     let formatted_contents =
         serde_json::to_string_pretty(&contents).expect("Unable to format JSON");
@@ -41,6 +41,27 @@ pub fn update_file(path: &PathBuf, contents: &serde_json::Value) {
         .open(path)
         .unwrap();
     writeln!(&mut file, "{}", formatted_contents).expect("Unable to update config file.");
+}
+
+/**
+ * Compares the JSON values
+ * @returns same = false, different = true
+ */
+pub fn json_diff(original_json: &Value, new_json: &Value) -> bool {
+    let keys = vec![
+        "App.WinFileVersion",
+        "App.WinProductVersion",
+        "App.WinFileVersionStr",
+        "App.WinProductVersionStr",
+    ];
+
+    for key in keys.iter() {
+        if original_json[key] != new_json[key] {
+            return true;
+        }
+    }
+
+    false
 }
 
 pub fn update_contents(json: &Value, args: Vec<String>) -> Value {
