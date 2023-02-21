@@ -15,7 +15,24 @@ pub fn get_full_path(path: &str) -> PathBuf {
     Path::new(&home_path).join(path)
 }
 
-pub fn update_file(path: PathBuf, contents: &serde_json::Value) {
+pub fn done() {
+    println!("{}", "Done.".green());
+}
+
+pub fn create_backup(path: &PathBuf,  contents: &serde_json::Value) {
+    let backup_path = format!("{}{}", path.display(), ".backup");
+    let formatted_contents =
+        serde_json::to_string_pretty(&contents).expect("Unable to format JSON");
+    let mut file = File::options()
+        .write(true)
+        .truncate(true)
+        .create(true)
+        .open(backup_path)
+        .expect("Could not create backup file.");
+    writeln!(&mut file, "{}", formatted_contents).expect("Unable to update config file.");
+}
+
+pub fn update_file(path: &PathBuf, contents: &serde_json::Value) {
     let formatted_contents =
         serde_json::to_string_pretty(&contents).expect("Unable to format JSON");
     let mut file = File::options()
@@ -23,7 +40,7 @@ pub fn update_file(path: PathBuf, contents: &serde_json::Value) {
         .truncate(true)
         .open(path)
         .unwrap();
-    write!(&mut file, "{}", formatted_contents).expect("Unable to update config file.");
+    writeln!(&mut file, "{}", formatted_contents).expect("Unable to update config file.");
 }
 
 pub fn update_contents(json: &Value, args: Vec<String>) -> Value {
@@ -55,7 +72,7 @@ pub fn get_values() -> Vec<String> {
         .as_str()
         .expect("Incorrect or missing version_str from values.json");
 
-    println!("{}", "Retrieved values".green());
+    done();
 
     [String::from(version), String::from(version_str)].to_vec()
 }
