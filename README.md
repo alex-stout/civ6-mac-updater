@@ -6,17 +6,11 @@ CLI for multiplayer Civ 6 games. Updates the version number on Macs to match Win
 
 ## Installation
 
-Using the Rust toolchain:
+Installing the CLI via the Rust toolchain:
 ```console
 $ cargo install civ6-mac-updater
 ```
-
-This installs the CLI.
-
-To run:
-```console
-$ civ6-mac-updater
-```
+*Note: If you do not have the Rust toolchain installed follow the instructions here: https://www.rust-lang.org/tools/install*
 
 ## Usage
 The easiest way to use the cli is without any args. This will automatically reach out to the GitHub repository and grab the latest values: 
