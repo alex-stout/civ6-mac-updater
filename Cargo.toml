@@ -1,7 +1,12 @@
 [package]
 name = "civ6-mac-updater"
+description = "Updates Civ VI version for Mac to prevent host version mismatch error."
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
+homepage = "https://github.com/alex-stout/civ6-mac-updater"
+repository = "https://github.com/alex-stout/civ6-mac-updater"
+documentation = "https://github.com/alex-stout/civ6-mac-updater"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
