@@ -8,6 +8,30 @@ use std::{
 
 use serde_json::{json, Value};
 
+fn open_file(path: &PathBuf) -> File {
+    let file_results = File::options()
+        .write(true)
+        .truncate(true)
+        .create(true)
+        .open(path);
+
+    match file_results {
+        Ok(file) => file,
+        Err(error) => match error.kind() {
+            ErrorKind::PermissionDenied => {
+                println!(
+                "{}",
+                "Failed.\nPermission denied. Make sure where you're running this from has full disk access. See System Preferences for settings.".red()
+            );
+                std::process::exit(1);
+            }
+            other_error => {
+                panic!("Problem opening the file: {:?}", other_error);
+            }
+        },
+    }
+}
+
 pub fn get_full_path(path: &str) -> PathBuf {
     #[allow(deprecated)]
     let home_path = env::home_dir().expect("Cannot get home dir.");
@@ -24,7 +48,7 @@ pub fn get_config_file(path: &PathBuf) -> String {
             ErrorKind::NotFound => {
                 println!(
                     "{}",
-                    "Config file not found at. Please check that Civ6 is installed.".red()
+                    "Config file not found. Please check that Civ6 is installed.".red()
                 );
                 std::process::exit(1);
             }
@@ -41,27 +65,23 @@ pub fn done() {
     println!("{}", "Done.".green());
 }
 
-pub fn create_backup(path: &Path, contents: &serde_json::Value) {
-    let backup_path = format!("{}{}", path.display(), ".backup");
+pub fn create_backup(path: &PathBuf, contents: &serde_json::Value) {
+    let mut backup_path = path.clone();
+    backup_path.push(".backup");
     let formatted_contents =
         serde_json::to_string_pretty(&contents).expect("Unable to format JSON");
-    let mut file = File::options()
-        .write(true)
-        .truncate(true)
-        .create(true)
-        .open(backup_path)
-        .expect("Could not create backup file.");
+
+    let mut file = open_file(path);
+
     writeln!(&mut file, "{}", formatted_contents).expect("Unable to update config file.");
 }
 
 pub fn update_file(path: &PathBuf, contents: &serde_json::Value) {
     let formatted_contents =
         serde_json::to_string_pretty(&contents).expect("Unable to format JSON");
-    let mut file = File::options()
-        .write(true)
-        .truncate(true)
-        .open(path)
-        .unwrap();
+
+    let mut file = open_file(path);
+
     writeln!(&mut file, "{}", formatted_contents).expect("Unable to update config file.");
 }
 
