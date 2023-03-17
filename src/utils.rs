@@ -42,7 +42,7 @@ pub fn get_full_path(path: &str) -> PathBuf {
 pub fn get_config_file(path: &PathBuf) -> String {
     let file_results = fs::read_to_string(path);
 
-    let raw_contents = match file_results {
+    match file_results {
         Ok(file) => file,
         Err(error) => match error.kind() {
             ErrorKind::NotFound => {
@@ -56,9 +56,7 @@ pub fn get_config_file(path: &PathBuf) -> String {
                 panic!("Problem opening the file: {:?}", other_error);
             }
         },
-    };
-
-    raw_contents
+    }
 }
 
 pub fn done() {
