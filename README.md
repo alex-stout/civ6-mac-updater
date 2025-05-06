@@ -15,7 +15,7 @@ $ cargo install civ6-mac-updater
 ## Usage
 The easiest way to use the cli is without any args. This will automatically reach out to the GitHub repository and grab the latest values: 
 ```console
-$ civ-6-mac-updater
+$ civ6-mac-updater
 Fetching values from remote repository... Done.
 Found configuration at: ~/Library/Application Support/Steam/steamapps/common/Sid Meier's Civilization VI/Civ6.app/Contents/AspyrAssets/global/String/App.json
 Updated configuration:
