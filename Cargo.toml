@@ -1,7 +1,7 @@
 [package]
 name = "civ6-mac-updater"
 description = "Updates Civ VI version for Mac to prevent host version mismatch error."
-version = "1.2.0"
+version = "1.2.1"
 edition = "2021"
 license = "MIT"
 homepage = "https://github.com/alex-stout/civ6-mac-updater"
