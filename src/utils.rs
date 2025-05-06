@@ -88,7 +88,7 @@ pub fn update_file(path: &PathBuf, contents: &serde_json::Value) {
  * @returns same = false, different = true
  */
 pub fn json_diff(original_json: &Value, new_json: &Value) -> bool {
-    let keys = vec![
+    let keys = [
         "App.WinFileVersion",
         "App.WinProductVersion",
         "App.WinFileVersionStr",
